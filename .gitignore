@@ -1,2 +1,19 @@
-/temp
-*/.terraform
+# terraform plugins directory
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.lock.info
+terra/.terraform.tfstate.lock.info
+examples.tf
+.mute-tf/
+.mute/
+.tests/
+temp/
+
+#editors
+.vscode/
+*.todo
+
+#MacOS
+*.DS_Store
+.DS_Store
