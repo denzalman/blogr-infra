@@ -9,7 +9,7 @@
 data "template_file" "vars" {
   template = "${file("./static/ansible/vars.tpl")}"
   vars {
-    ip  = "${aws_instance.master.private_ip}"
+    ip  = "${join("", aws_instance.master.private_ip)}"
   }
 }
 resource "local_file" "vars" {
