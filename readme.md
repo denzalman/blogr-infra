@@ -9,7 +9,7 @@ Prometheus: 1 instance
 Haproxy: 1 instance for GRafana and Kibana
 Jenkins: 1 instance
 
-##### To deploy the environment run:
+##### Invironment deployment instructions:
 Check your default aws credentials in file ```~/.aws/credentials```
 or run command ```aws configure```
 
@@ -23,7 +23,7 @@ terraform apply --auto-approve
 
 Make :coffee: or take :beer: with :pizza: and wait for output in terminal windows...
 
-You have to receive IP adresses of Blogr App, Consul, Grafana and Kibana web pages after 5-10 min.
+You will receive IP adresses of Blogr App, Consul, Grafana and Kibana web pages after 5-10 min.
 1. Open any IP of consul web intrface from the list on port 8500 and wait until all is green.
 2. After you can open Grafana IP on port 3000 and Kibana IP on prot 5601 
 3. Grafana credentials: admin/password
@@ -32,8 +32,8 @@ You have to receive IP adresses of Blogr App, Consul, Grafana and Kibana web pag
 
 - [x] Create VPC and temporary network
 - [x] Build a docker image of Blogr app. (another project denzalman/blogr.git)
-- [x] Make MySQL Instance with proper DB settings
-- [ ] Make 3 Consul instances for service discovery
+- [x] Make MySQL Instance with proper DB settings (--- still needs to be fixed)
+- [x] Make Consul instances for service discovery
 - [ ] Make k8s cluster with 1 master and 3 minions
 - [ ] Setup Blogr app deployment with k8s
 - [ ] Make Jenkins instance provisioning

@@ -9,6 +9,7 @@ examples.tf
 .mute/
 .tests/
 temp/
+*.pem
 
 #editors
 .vscode/

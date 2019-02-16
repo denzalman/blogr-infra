@@ -19,6 +19,10 @@
 #   default = ""
 # }
 
+###############################################################################
+# VPC Config
+###############################################################################
+
 variable "vpc_region" {
   description = "AWS region"
   default     = "us-east-1"
@@ -29,7 +33,6 @@ variable "environment_tag" {
   default = "dev"
 }
 
-# VPC Config
 variable "vpc_name" {
   description = "VPC for building demos"
   default     = "k8s"
@@ -39,7 +42,9 @@ variable "vpc_cidr_block" {
   description = "IP addressing for VPC Network"
   default     = "10.0.0.0/16"
 }
-
+###############################################################################
+# Subnet and instances count numbers
+###############################################################################
 variable "public_subnet_count" {
   description = "Public Subnet Count"
   default     = 1
@@ -50,7 +55,20 @@ variable "minions_count" {
   default     = 1
 }
 
+variable "consul_master_count" {
+  description = "Minions Instnces Count"
+  default     = 1
+}
+
+variable "app_instances_count" {
+  description = "Blogr app tinstances count"
+  default = 1
+}
+
+
+###############################################################################
 # Instances Config
+###############################################################################
 # TODO: Find list with Ubuntu AMIs and implement choise by region
 variable "ubuntu_ami_id" {
   description = "AMI ID for ubuntu image"
