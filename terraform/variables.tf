@@ -50,9 +50,14 @@ variable "public_subnet_count" {
   default     = 1
 }
 
-variable "minions_count" {
-  description = "Minions Instnces Count"
-  default     = 1
+variable "k8s_master_count" {
+  description = "description"
+  default = 1
+}
+
+variable "k8s_minion_count" {
+  description = "description"
+  default = 1
 }
 
 variable "consul_master_count" {

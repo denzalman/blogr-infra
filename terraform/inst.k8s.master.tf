@@ -2,10 +2,11 @@
 # K8s Master Instance Deploy
 ###############################################################################
 resource "aws_instance" "master" {
-  count                  = 1
+  count                  = "${var.k8s_master_count}"
   ami                    = "${var.ubuntu_ami_id}"
-  instance_type          = "${var.instance_type}"
+  instance_type          = "${var.k8s_master_instance_type}"
   subnet_id              = "${element(aws_subnet.public.*.id, count.index)}"
+  iam_instance_profile   = "${aws_iam_instance_profile.consul-join.name}"
   vpc_security_group_ids = ["${aws_security_group.test.id}"]
   key_name               = "${var.key_name}"
 
