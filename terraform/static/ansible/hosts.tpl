@@ -1,5 +1,5 @@
 [master]
-${ master }
+master ansible_host=${ master }
 
 [minion]
 ${ minions }

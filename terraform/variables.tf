@@ -57,7 +57,7 @@ variable "k8s_master_count" {
 
 variable "k8s_minion_count" {
   description = "description"
-  default = 1
+  default = 2
 }
 
 variable "consul_master_count" {
@@ -87,10 +87,10 @@ variable "instance_type" {
 
 variable "k8s_master_instance_type" {
   description = "Amazon instance type for new instances"
-  default     = "t2.micro"
+  default     = "t3.small"
 }
 
 variable "k8s_minion_instance_type" {
   description = "Amazon instance type for new instances"
-  default     = "t3.small"
+  default     = "t2.micro"
 }

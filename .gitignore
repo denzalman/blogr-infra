@@ -10,6 +10,7 @@ examples.tf
 .tests/
 temp/
 *.pem
+*.retry
 
 #editors
 .vscode/

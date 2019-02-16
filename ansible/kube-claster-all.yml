@@ -1,0 +1,5 @@
+---
+- include: kube-initial.yml
+- include: kube-dependencies.yml
+- include: kube-master.yml
+- include: kube-minion.yml

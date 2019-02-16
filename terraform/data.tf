@@ -9,7 +9,7 @@
 data "template_file" "vars" {
   template = "${file("./static/ansible/vars.tpl")}"
   vars {
-    ip  = "${join("", aws_instance.master.private_ip)}"
+    ip  = "${join("", aws_instance.master.*.public_ip)}"
   }
 }
 resource "local_file" "vars" {
@@ -22,8 +22,8 @@ resource "local_file" "vars" {
 data "template_file" "hosts" {
   template = "${file("./static/ansible/hosts.tpl")}"
   vars {
-    minions = "${join("\n", aws_instance.minion.*.private_ip)}"
-    master  = "${aws_instance.master.private_ip}"
+    minions = "${join("\n", aws_instance.minion.*.public_ip)}"
+    master  = "${aws_instance.master.public_ip}"
   }
 }
 
