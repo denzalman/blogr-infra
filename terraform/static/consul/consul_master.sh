@@ -3,12 +3,12 @@
 set -i
 export TERM=xterm-256color
 export DEBIAN_FRONTEND=noninteractive
-export DATACENTER_NAME="dummy"
+export DATACENTER_NAME="blogr"
 
 echo "Determining local IP address"
 LOCAL_IPV4=$(hostname --ip-address)
 echo "Using ${LOCAL_IPV4} as IP address for configuration and anouncement"
-
+apt-add-repository --yes --update ppa:ansible/ansible
 apt-get update
 apt-get install -y \
     apt-transport-https \
@@ -17,11 +17,20 @@ apt-get install -y \
     software-properties-common \
     jq \
     unzip \
-    dnsmasq
+    dnsmasq \
+    ansible
+
+echo "create dummy interface"
+ip link add dummy0 type dummy
+ip addr add 169.254.1.1/32 dev dummy0
+ip link set dev dummy0 up
 
 cat << EODMCF >/etc/dnsmasq.d/10-consul
 # Enable forward lookup of the 'consul' domain:
-server=/consul/127.0.0.1#8600
+# server=/consul/127.0.0.1#8600
+server=/consul/169.254.1.1#8600
+listen-address=127.0.0.1
+listen-address=169.254.1.1
 EODMCF
 
 systemctl restart dnsmasq
@@ -64,7 +73,7 @@ After=network-online.target
 [Service]
 LimitNOFILE=65536
 Restart=on-failure
-ExecStart=/usr/local/bin/consul agent -config-dir /etc/consul.d
+ExecStart=/usr/local/bin/consul agent -config-dir=/etc/consul.d
 ExecReload=/bin/kill -HUP $MAINPID
 KillSignal=SIGINT
 Type=notify

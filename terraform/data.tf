@@ -7,7 +7,7 @@
 # }
 
 data "aws_route53_zone" "blogr" {
-  name = "blogr.gq"
+  name = "blogr.zlab.pro"
 }
 
 resource "aws_route53_record" "www" {

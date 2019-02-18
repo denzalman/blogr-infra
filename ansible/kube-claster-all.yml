@@ -1,5 +1,4 @@
 ---
-- import_playbook: kube-initial.yml
 - import_playbook: kube-dependencies.yml
 - import_playbook: kube-master.yml
 - import_playbook: kube-minion.yml

@@ -18,15 +18,51 @@ resource "aws_instance" "consul" {
   user_data = "${file("./static/consul/consul_master.sh")}"
 
   provisioner "local-exec" {
-    command = "echo ${self.id}"
+    command = "sleep 20"
   }
-  
+  connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = "${tls_private_key.k8s_key.private_key_pem}"
+      agent       = "false"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "mkdir ansible",
+      "chmod 700 ansible",
+      "sleep 10"
+  ]}
+
+  provisioner "file" {
+    source      = "../ansible/"
+    destination = "$PWD/ansible/"
+  }
+
+  provisioner "file" {
+    content      = "${tls_private_key.k8s_key.private_key_pem}"
+    destination = "./ansible/${var.key_name}.pem"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+     "sleep 30",
+     "cd ansible/",
+     "chmod 400 ${var.key_name}.pem",
+     "ansible-playbook kube-claster-all.yml",
+    ]
+  }
+
   tags {
     Name        = "consul-master"
     environment = "${var.environment_tag}"
   }
 
-  depends_on = ["aws_key_pair.generated_key"]
+  depends_on = ["aws_key_pair.generated_key", 
+                "aws_instance.master", 
+                "aws_instance.minion", 
+                "local_file.hosts",
+                "local_file.vars"]
 }
 
 resource "aws_iam_role" "consul-join" {
