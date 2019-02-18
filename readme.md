@@ -31,10 +31,11 @@ You will receive IP adresses of Blogr App, Consul, Grafana and Kibana web pages 
 #### Project Plan:
 
 - [x] Create VPC and temporary network
-- [x] Build a docker image of Blogr app. (another project denzalman/blogr.git)
+- [x] Make simple blog app with python and flask (design needs to be improved later)
+- [x] Build a docker image of Blogr app. (another project github.com/denzalman/blogr.git)
 - [x] Make MySQL Instance with proper DB settings (--- still needs to be fixed)
 - [x] Make Consul instances for service discovery
-- [ ] Make k8s cluster with 1 master and 3 minions
+- [x] Make k8s cluster with 1 master and 2 minions
 - [ ] Setup Blogr app deployment with k8s
 - [ ] Make Jenkins instance provisioning
 - [ ] Setup Jenkins pipline to work with github blogr app changes
