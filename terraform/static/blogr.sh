@@ -25,9 +25,9 @@ apt-get install -y \
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 
 add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
+    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+    $(lsb_release -cs) \
+    stable"
 
 apt-get update
 apt-get install -y docker-ce
@@ -133,8 +133,8 @@ sudo docker pull denzal/blogr
 #             --restart=always \
 #             denzal/dummy &
 sudo docker run --name blogr -d -p 5000:5000 --rm \
-     -e DATABASE_URL='mysql+mysqlconnector://blogr:blogr@10.0.10.10:3306/blogr' \
-     denzal/blogr:latest
+    -e DATABASE_URL='mysql+mysqlconnector://blogr:blogr@10.0.10.10:3306/blogr' \
+    denzal/blogr:latest
 
 # sudo docker run -v /tmp/filebeat.yml:/usr/share/filebeat/filebeat.yml \
 #                 -v /tmp:/tmp:ro \

@@ -1,0 +1,17 @@
+---
+- hosts: master
+  become: yes
+  tasks:
+    - name: Run Blogr Deployment yaml
+      shell: kubectl apply -f /home/ubuntu/dp-blogr-app.yml
+      args:
+        chdir: $HOME/
+    - name: Run Blogr Load Ballancer Service
+      shell: kubectl apply -f /home/ubuntu/svc-blogr-lb.yml >> kube_log2.txt
+      args:
+        chdir: $HOME/
+        creates: kube_log2.txt
+    # - name: Wait for pods to come up (maybe will be useful)
+    #   shell: kubectl get pods -o json
+    #   register: kubectl_get_pods
+    #   until: kubectl_get_pods.stdout|from_json|json_query('items[*].status.phase')|unique == ["Running"]

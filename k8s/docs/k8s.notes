@@ -61,7 +61,7 @@ apt update
 apt install docker-ce kubelet kubeadm kubectl kubernetes-cni -y
 Worker: Setup the Kubernetes Config:
 
-As a normal user:
+### As a normal user:
 
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
@@ -70,7 +70,7 @@ export KUBECONFIG=$HOME/.kube/config
 export KUBECONFIG=$HOME/.kube/config | tee -a ~/.bashrc
 Worker: Join the Node to the Cluster:
 
-From the output of the kubeadm init, you received a join token, which we will be running from the node that we would like to join:
+### From the output of the kubeadm init, you received a join token, which we will be running from the node that we would like to join:
 
 kubeadm join --token 51e20a.40a4599dbe3ca2e0 172.31.39.193:6443 --discovery-token-ca-cert-hash sha256:[long-string]
 Master: Check if the nodes are reachable:
@@ -82,16 +82,17 @@ ip-172-31-39-193   Ready     master    23m       v1.8.4
 Master: Verify if all the Kube-System Containers are running:
 
 kubectl get all --namespace=kube-system
-Master: List the Pods:
 
-List the containers thats currently running:
+# Master: List the Pods:
+
+### List the containers thats currently running:
 
 kubectl get pods
 NAME                     READY     STATUS              RESTARTS   AGE
 guids-6d7b75568d-sndbd   0/1       ContainerCreating   0          5s
 Master: Deploy a Pod:
 
-Lets deploy a service into our kubernetes cluster:
+# Lets deploy a service into our kubernetes cluster:
 
 kubectl run guids --image=alexellis2/guid-service:latest --port 9000
 deployment "guids" created
@@ -141,7 +142,7 @@ kubectl get pods --namespace=sock-shop
 - http://alesnosek.com/blog/2017/02/14/accessing-kubernetes-pods-from-outside-of-the-cluster/
 
 
-#Helm Install
+### Helm Install
 curl https://raw.githubusercontent.com/helm/helm/master/scripts/get > get_helm.sh
 chmod 700 get_helm.sh
 ./get_helm.sh

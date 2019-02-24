@@ -11,7 +11,7 @@ examples.tf
 temp/
 *.pem
 *.retry
-
+hosts.txt
 #editors
 .vscode/
 *.todo

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: blogr
+  labels:
+    app: blogr-app
+spec:
+  containers:
+    - image: denzal/blogr:latest
+      name: blogr
+      ports:
+        - containerPort: 5000
+      # env:
+      #   - name:  ENVVARNAME
+      #     value:  ENVVARVALUE
+      #TODO: Add right ENV with DB for tests, or hardcode consul service path

@@ -15,11 +15,14 @@ resource "aws_instance" "master" {
   connection {
       type        = "ssh"
       user        = "ubuntu"
-      #private_key = "${file(var.private_key_path)}"
-      private_key = "${aws_key_pair.generated_key.fingerprint}"
+      private_key = "${tls_private_key.k8s_key.private_key_pem}"
       agent       = "false"
-    }
+  }
 
+  provisioner "file" {
+    source      = "../k8s/"
+    destination = "$PWD"
+  }
   # provisioner "file" {
   #   source = "./static/grafana/datasource.yml"
   #   destination = "/tmp/datasource.yml"
@@ -40,4 +43,12 @@ resource "aws_instance" "master" {
   }
 
   depends_on = ["aws_instance.minion"]
+}
+
+resource "aws_route53_record" "master" {
+    zone_id = "${data.aws_route53_zone.blogr.zone_id}"
+    name = "master.${data.aws_route53_zone.blogr.name}"
+    type = "A"
+    ttl = "300"
+    records = ["${aws_instance.master.public_ip}"]
 }

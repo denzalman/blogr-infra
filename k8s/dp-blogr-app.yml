@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blogr-app
+spec:
+  selector:
+    matchLabels:
+      app: blogr-app
+  replicas: 3
+  minReadySeconds: 15
+  restartPolicy: Always
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: blogr-app
+    spec:
+      containers:
+      - name: blogr-app
+        image: denzal/blogr:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        env:
+        - name: DATABASE_URL
+          value: "mysql+mysqlconnector://blogr:blogr@10.0.10.10:3306/blogr"

@@ -7,12 +7,12 @@
 # }
 
 data "aws_route53_zone" "blogr" {
-  name = "blogr.zlab.pro"
+  name = "zlab.pro"
 }
 
 resource "aws_route53_record" "www" {
   zone_id = "${data.aws_route53_zone.blogr.zone_id}"
-  name = "www.${data.aws_route53_zone.blogr.name}"
+  name = "blogr.${data.aws_route53_zone.blogr.name}"
   type = "A"
   ttl = "300"
   records = ["${aws_instance.consul.public_ip}"]

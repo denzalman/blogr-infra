@@ -121,4 +121,4 @@ mysql -uroot -p${ROOTPASSWDDB} -e "CREATE USER 'blogr'@'%' IDENTIFIED BY 'blogr'
 #mysql -uroot -p${ROOTPASSWDDB} -e "GRANT ALL PRIVILEGES ON blogr.* TO 'blogr'@'%' IDENTIFIED BY 'blogr';"
 
 mysql -uroot -p${ROOTPASSWDDB} -e "GRANT ALL ON *.* TO 'blogr'@'localhost';"
-mysql -uroot -p${ROOTPASSWDDB} -e "GRANT ALL ON *.* TO 'blogr'@'%';""
+mysql -uroot -p${ROOTPASSWDDB} -e "GRANT ALL ON *.* TO 'blogr'@'%';"
