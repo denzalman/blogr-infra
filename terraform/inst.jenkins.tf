@@ -19,7 +19,7 @@ resource "aws_ebs_volume" "jenkins" {
 
 
 resource "aws_volume_attachment" "jenkins_att" {
-    device_name = "/dev/sdh"
+    device_name = "/dev/xvdh"
     volume_id   = "${aws_ebs_volume.jenkins.id}"
     instance_id = "${aws_instance.jenkins.id}"
 
@@ -59,6 +59,11 @@ resource "aws_instance" "jenkins" {
     provisioner "local-exec" {
         command = "echo ${self.id}"
     }
+    # provisioner "remote-exec" {
+    # when = "destroy"
+    # inline = [
+    #     "umount /dev/xvdh",]
+    # }
 
     tags {
         Name        = "${var.vpc_name}-${var.environment_tag}-jenkins"

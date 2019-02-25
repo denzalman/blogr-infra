@@ -17,9 +17,10 @@ add-apt-repository \
     stable"
 
 apt-get update
-apt-get install -y docker-cels
-chmod 777 /dev/sdh/var/jenkins_home
+apt-get install -y docker-ce
+sudo mkdir /data
+sudo mount /dev/xvdh /data/
 
 docker run -p 80:8080 -p 50000:50000 -d --rm\
-        -v /dev/sdh/var/jenkins_home:/var/jenkins_home \
+        -v /data/jenkins_home:/var/jenkins_home \
         jenkins/jenkins

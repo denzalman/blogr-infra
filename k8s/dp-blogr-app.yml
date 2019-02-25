@@ -2,13 +2,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: blogr-app
+  namespace: blogr
 spec:
   selector:
     matchLabels:
       app: blogr-app
   replicas: 3
   minReadySeconds: 15
-  restartPolicy: Always
   strategy:
     type: RollingUpdate
     rollingUpdate:
