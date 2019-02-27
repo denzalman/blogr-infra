@@ -1,5 +1,7 @@
 #!/bin/bash
 # set -x
+# hostname percona
+
 # export TERM=xterm-256color
 # export DEBIAN_FRONTEND=noninteractive
 # export DATACENTER_NAME="dummy"
@@ -8,6 +10,10 @@
 # echo "Determining local IP address"
 # LOCAL_IPV4=$(curl "http://169.254.169.254/latest/meta-data/local-ipv4")
 # echo "Using ${LOCAL_IPV4} as IP address for configuration and anouncement"
+
+
+
+
 
 # NODE_NAME=$(curl "http://169.254.169.254/latest/meta-data/hostname")
 
@@ -91,13 +97,21 @@
 
 ### Percona DB install
 
-wget https://repo.percona.com/apt/percona-release_latest.$(lsb_release -sc)_all.deb
-sudo dpkg -i percona-release_latest.$(lsb_release -sc)_all.deb
-sudo percona-release setup ps80
+# wget https://repo.percona.com/apt/percona-release_latest.$(lsb_release -sc)_all.deb
+# sudo dpkg -i percona-release_latest.$(lsb_release -sc)_all.deb
+wget https://repo.percona.com/apt/percona-release_0.1-4.$(lsb_release -sc)_all.deb
+dpkg -i percona-release_0.1-4.$(lsb_release -sc)_all.deb
 
+sudo apt-get install -qq -y percona-server-server-5.7 percona-server-client-5.7
+
+sudo percona-release setup ps80
+sudo apt-get update
+#ROOTPAy
 #ROOTPASSWDDB="$(openssl rand -base64 12)"
 ROOTPASSWDDB="password"
 #echo "rootdbpass: $ROOTPASSWDDB" >> ./dbpass.txt
+#TODO: change root privelegies!
+
 
 #DONE: CHANGE ROOT PASSWORD! 
 package="percona-server-server-5.7"
