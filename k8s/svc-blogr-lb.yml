@@ -8,12 +8,12 @@ metadata:
   annotations:
     #service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
 spec:
+ #externalTrafficPolicy: Local
   ports:
   - protocol: TCP
     port: 80
     targetPort: 5000
     nodePort: 30003
-    
   type: LoadBalancer
   selector:
     app: blogr-app

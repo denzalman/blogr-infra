@@ -3,26 +3,34 @@
   become: yes
   tasks:
     - name: Run Blogr Namespace yaml
+      become: yes
+      become_user: ubuntu
       shell: kubectl apply -f https://raw.githubusercontent.com/denzalman/blogr-infra/master/k8s/namespace.yml >> kube_log.txt
       args:
         chdir: $HOME/
         creates: kube_log.txt
 
     - name: Run Blogr Deployment yaml
+      become: yes
+      become_user: ubuntu
       shell: kubectl apply -f https://raw.githubusercontent.com/denzalman/blogr-infra/master/k8s/dp-blogr-app.yml >> kube_log.txt
       args:
         chdir: $HOME/
 
-    - name: Run Blogr Load Ballancer Service
+    - name: Run Blogr Load Ballancer Service (master.zlab.pro:30003)
+      become: yes
+      become_user: ubuntu
       shell: kubectl apply -f https://raw.githubusercontent.com/denzalman/blogr-infra/master/k8s/svc-blogr-lb.yml >> kube_log.txt
       args:
         chdir: $HOME/
 
-    - name: Run Blogr Ingress
-      shell: kubectl apply -f https://raw.githubusercontent.com/denzalman/blogr-infra/master/k8s/ingress.yml >> kube_log.txt
-      args:
-        chdir: $HOME/
-        
+    # - name: Run Blogr Ingress
+    #   become: yes
+    #   become_user: ubuntu
+    #   shell: kubectl apply -f https://raw.githubusercontent.com/denzalman/blogr-infra/master/k8s/ingress.yml >> kube_log.txt
+    #   args:
+    #     chdir: $HOME/
+
     # - name: Wait for pods to come up (maybe will be useful)
     #   shell: kubectl get pods -o json
     #   register: kubectl_get_pods

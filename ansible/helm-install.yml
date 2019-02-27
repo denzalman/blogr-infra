@@ -4,10 +4,13 @@
   tasks:
     - name: Download Helm install script
       shell: 'curl https://raw.githubusercontent.com/helm/helm/master/scripts/get > get_helm.sh'
-  
+
     - name: Change rights to script file
       file: "./get_helm.sh"
       mode: a+x
 
-    - name: Run Script
+    - name: Run Helm install Script
       script: ./get_helm.sh
+
+    - name: Rin Helm Initialization
+      shell: "helm init"
