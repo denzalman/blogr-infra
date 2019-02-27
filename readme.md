@@ -36,9 +36,10 @@ You will receive IP adresses of Blogr App, Consul, Grafana and Kibana web pages 
 - [x] Make MySQL Instance with proper DB settings (--- still needs to be fixed)
 - [x] Make Consul instances for service discovery
 - [x] Make k8s cluster with 1 master and 2 minions
-- [ ] Setup Blogr app deployment with k8s
-- [ ] Make Jenkins instance provisioning
-- [ ] Setup Jenkins pipline to work with github blogr app changes
+- [x] Setup Blogr app deployment with k8s
+- [x] Make Jenkins instance provisioning
+- [x] Connect EFS to Jenkins inst for jenkins_home 
+- [x] Setup Jenkins pipline to work with github blogr app changes
 - [ ] Build the monitoring environment (prometheus/grafana)
 - [ ] Prometheus collector will find the application in consul and monitor it.
 - [ ] Make and add to provisioning Grafana dashboard

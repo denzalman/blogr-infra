@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -i
+#
 export TERM=xterm-256color
 export DEBIAN_FRONTEND=noninteractive
 export DATACENTER_NAME="blogr"
