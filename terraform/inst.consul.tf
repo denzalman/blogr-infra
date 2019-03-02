@@ -45,11 +45,12 @@ resource "aws_instance" "consul" {
   }
 
   provisioner "remote-exec" {
+    on_failure = "continue"
     inline = [
-     "sleep 30",
-     "cd ansible/",
-     "chmod 400 ${var.key_name}.pem",
-     "ansible-playbook kube-claster-all.yml",
+      "sleep 30",
+      "cd ansible/",
+      "chmod 400 ${var.key_name}.pem",
+      "ansible-playbook kube-claster-all.yml",
     ]
   }
 

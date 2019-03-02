@@ -17,3 +17,5 @@ spec:
   type: LoadBalancer
   selector:
     app: blogr-app
+
+#TODO: Make proper settings for k8s nodes and make AWS ELB working with this service!

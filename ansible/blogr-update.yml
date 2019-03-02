@@ -1,0 +1,13 @@
+---
+- hosts: master
+  vars:
+    ver : "{{ version }}"
+  become: yes
+  tasks:
+    - name: install Pod network
+      become: yes
+      become_user: ubuntu
+      shell: kubectl rolling-update blogr-app --image=denzal/blogr:ver
+      args:
+        chdir: $HOME
+        

@@ -6,7 +6,7 @@ resource "aws_instance" "master" {
   ami                    = "${var.ubuntu_ami_id}"
   instance_type          = "${var.k8s_master_instance_type}"
   subnet_id              = "${element(aws_subnet.public.*.id, count.index)}"
-  iam_instance_profile   = "${aws_iam_instance_profile.consul-join.name}"
+  iam_instance_profile   = "${aws_iam_instance_profile.nlb_k8s_master.name}"
   vpc_security_group_ids = ["${aws_security_group.test.id}"]
   key_name               = "${var.key_name}"
 
@@ -51,4 +51,59 @@ resource "aws_route53_record" "master" {
     type = "A"
     ttl = "300"
     records = ["${aws_instance.master.public_ip}"]
+}
+
+resource "aws_iam_role" "nlb_k8s_master" {
+  name  = "nlb_k8s_master"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_policy" "nlb_k8s_master" {
+  name  = "nlb_k8s_master"
+  description = "Allows K8s master create nlb loadBalancer"
+  policy      = <<EOF
+{
+  "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "kopsK8sNLBMasterPermsRestrictive",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeVpcs",
+                "elasticloadbalancing:*"
+            ],
+            "Resource": [
+                "*"
+            ]
+        }
+    ]
+}
+EOF
+}
+
+# Attach the policy
+resource "aws_iam_policy_attachment" "nlb_k8s_master" {
+  name  = "nlb_k8s_master"
+  roles      = ["${aws_iam_role.nlb_k8s_master.name}"]
+  policy_arn = "${aws_iam_policy.nlb_k8s_master.arn}"
+}
+
+# Create the instance profile
+resource "aws_iam_instance_profile" "nlb_k8s_master" {
+  name  = "nlb_k8s_master"
+  role = "${aws_iam_role.nlb_k8s_master.name}"
 }

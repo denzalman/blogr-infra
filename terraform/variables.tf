@@ -57,7 +57,7 @@ variable "k8s_master_count" {
 
 variable "k8s_minion_count" {
   description = "description"
-  default = 2
+  default = 1
 }
 
 variable "consul_master_count" {

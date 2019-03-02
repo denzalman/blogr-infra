@@ -67,7 +67,7 @@ resource "aws_instance" "jenkins" {
     ami                    = "${var.ubuntu_ami_id}"
     instance_type          = "${var.instance_type}"
     subnet_id              = "${element(aws_subnet.public.*.id, count.index)}"
-    iam_instance_profile   = "${aws_iam_instance_profile.consul-join.name}"
+    # iam_instance_profile   = "${aws_iam_instance_profile.consul-join.name}"
     vpc_security_group_ids = ["${aws_security_group.test.id}"]
     key_name               = "${var.key_name}"
 
@@ -84,14 +84,20 @@ resource "aws_instance" "jenkins" {
     #   destination = "/tmp/datasource.yml"
     #   }
         
-    provisioner "local-exec" {
-        command = "sleep 60"
+    provisioner "file" {
+    source      = "../ansible/"
+    destination = "$PWD/ansible/"
     }
 
     provisioner "file" {
         content      = "${tls_private_key.k8s_key.private_key_pem}"
-        destination = "${var.key_name}.pem"
+        destination = "./ansible/${var.key_name}.pem"
     }
+
+    provisioner "local-exec" {
+        command = "sleep 60"
+    }
+
     provisioner "remote-exec" {
     inline = [
         "sudo apt-get update",
@@ -101,20 +107,16 @@ resource "aws_instance" "jenkins" {
         "sudo chown -R ubuntu /data",
         "sudo chmod 775 /data",
         "sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 ${data.aws_efs_file_system.by_id.dns_name}:/ /data",
-        "sudo chmod 775 /data/jenkins_home",
-        "sudo docker run -p 80:8080 -p 50000:50000 -d --rm -v /data/jenkins_home:/var/jenkins_home jenkins/jenkins",
-        "sudo mv ${var.key_name}.pem /data/jenkins_home/secrets/ ",
-        "sudo chmod 400 /data/jenkins_home/secrets/${var.key_name}.pem"
+        "sudo chmod 777 /data/jenkins_home",
+        "sudo cp $HOME/ansible /var/jenkins_home/ansible",
+        "sudo chmod 400 /var/jenkins_home/ansible/${var.key_name}.pem",
+        "sudo docker run -u root -p 80:8080 -p 50000:50000 -d --rm -v /data/jenkins_home:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock jenkinsci/blueocean",
+        #"sudo mv ${var.key_name}.pem /data/jenkins_home/secrets/ ",
+        #"sudo chmod 400 /data/jenkins_home/secrets/${var.key_name}.pem",
+        # apt-get install python3-pip
+        # apt-get install python3-venv
         ]
     }
-    
-    # provisioner "remote-exec" {
-    # #when = "destroy"
-    # on_failure = "continue"
-    # inline = [
-    #     "umount /dev/xvdh",]
-    # }
-
     tags {
         Name        = "${var.vpc_name}-${var.environment_tag}-jenkins"
         environment = "${var.environment_tag}"

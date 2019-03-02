@@ -12,7 +12,7 @@ data "aws_route53_zone" "blogr" {
 
 resource "aws_route53_record" "www" {
   zone_id = "${data.aws_route53_zone.blogr.zone_id}"
-  name = "blogr.${data.aws_route53_zone.blogr.name}"
+  name = "consul.${data.aws_route53_zone.blogr.name}"
   type = "A"
   ttl = "300"
   records = ["${aws_instance.consul.public_ip}"]
@@ -46,31 +46,6 @@ resource "local_file" "hosts" {
 
     depends_on = ["aws_instance.minion", 
                   "aws_instance.master"]
-
-    # provisioner "local-exec" {
-    # environment = { }
-    # working_dir = "../ansible"
-    # command = "ansible-playbook install-docker.yml"
-    # # --private-key ${tls_private_key.k8s_key.private_key_pem}
-    # }
-
-    # provisioner "local-exec" {
-    # environment = { }
-    # working_dir = "../ansible"
-    # command = "ansible-playbook k8s-common.yml"
-    # }
-
-    # provisioner "local-exec" {
-    # environment = { }
-    # working_dir = "../ansible"
-    # command = "ansible-playbook k8s-master.yml"
-    # }
-
-    # provisioner "local-exec" {
-    # environment = { }
-    # working_dir = "../ansible"
-    # command = "ansible-playbook k8s-minion.yml"
-    # }
 } 
 
 
