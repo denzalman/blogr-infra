@@ -7,7 +7,4 @@
     - name: install Pod network
       become: yes
       become_user: ubuntu
-      shell: kubectl rolling-update blogr-app --image=denzal/blogr:ver
-      args:
-        chdir: $HOME
-        
+      shell: kubectl set image deployment/blogr-app blogr-app=denzal/blogr:{{ version }} --namespace=blogr

@@ -83,7 +83,14 @@ resource "aws_instance" "jenkins" {
     #   source = "./static/grafana/datasource.yml"
     #   destination = "/tmp/datasource.yml"
     #   }
-        
+    
+    provisioner "remote-exec" {
+    inline = [
+        "mkdir ansible",
+        "chmod 700 ansible",
+        "sleep 10"
+    ]}
+
     provisioner "file" {
     source      = "../ansible/"
     destination = "$PWD/ansible/"
@@ -108,9 +115,10 @@ resource "aws_instance" "jenkins" {
         "sudo chmod 775 /data",
         "sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 ${data.aws_efs_file_system.by_id.dns_name}:/ /data",
         "sudo chmod 777 /data/jenkins_home",
-        "sudo cp $HOME/ansible /var/jenkins_home/ansible",
-        "sudo chmod 400 /var/jenkins_home/ansible/${var.key_name}.pem",
-        "sudo docker run -u root -p 80:8080 -p 50000:50000 -d --rm -v /data/jenkins_home:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock jenkinsci/blueocean",
+        "sudo cp -f -r -u $HOME/ansible /data/jenkins_home/ansible",
+        "sudo chmod 400 /data/jenkins_home/ansible/${var.key_name}.pem",
+        "sudo docker run -u root -p 80:8080 -p 50000:50000 -d --restart unless-stopped --rm -v /data/jenkins_home:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock -v $(which ansible):/usr/bin/ansible jenkinsci/blueocean",
+        #"sudo docker run jenkins/jnlp-slave -d -u root -headless -url http://jenkins.zlab.pro 3da3c4cd8f383d65f64b86449ada7136e41a7ed16e587b380eae79a23208a412 jenkins_slave",
         #"sudo mv ${var.key_name}.pem /data/jenkins_home/secrets/ ",
         #"sudo chmod 400 /data/jenkins_home/secrets/${var.key_name}.pem",
         # apt-get install python3-pip
