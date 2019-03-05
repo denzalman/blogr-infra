@@ -1,0 +1,25 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blogr-app
+  namespace: blogr
+  labels:
+    app: blogr-app
+spec:
+  type: NodePort
+  selector:
+    app: blogr-app
+  ports:
+  - name: http
+    port: 5000
+    nodePort: 30010
+    protocol: TCP
+
+# https://medium.com/@hagaibarel/kubernetes-and-elbs-the-hard-way-c59a15779caf
+# this service for AWS classic loadbalancer
+# have to create ELB and link it to minion instances with port 30010
+# but there is better solution with kube LoadBalancer Servica and NLB
+#TODO: discover a way to setup NLB for loadbalancing
+
+

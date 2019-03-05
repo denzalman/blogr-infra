@@ -1,10 +1,10 @@
 ---
 - hosts: master
   vars:
-    ver : "{{ version }}"
   become: yes
   tasks:
     - name: install Pod network
       become: yes
       become_user: ubuntu
-      shell: kubectl set image deployment/blogr-app blogr-app=denzal/blogr:{{ version }} --namespace=blogr
+      shell: kubectl set image deployment/blogr-app blogr-app=denzal/blogr:latest --namespace=blogr
+#TODO: implement verdsion variable instead of latest
