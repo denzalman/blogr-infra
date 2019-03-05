@@ -1,16 +1,22 @@
 ---
+#TODO: check why curl cant't work in this playbook
 - hosts: master
   become: yes
   tasks:
     - name: Download Helm install script
-      shell: 'curl https://raw.githubusercontent.com/helm/helm/master/scripts/get > get_helm.sh'
+      get_url: 
+        url: https://raw.githubusercontent.com/helm/helm/master/scripts/get
+        dest: get_helm.sh
+
+    # shell: 'curl https://raw.githubusercontent.com/helm/helm/master/scripts/get > get_helm.sh'
 
     - name: Change rights to script file
-      file: "./get_helm.sh"
-      mode: a+x
+      file: 
+        path: "./get_helm.sh"
+        mode: a+x
 
     - name: Run Helm install Script
-      script: ./get_helm.sh
+      command: sh ./get_helm.sh
 
     - name: Rin Helm Initialization
       shell: "helm init"
