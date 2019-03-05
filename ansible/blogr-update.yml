@@ -7,4 +7,4 @@
       become: yes
       become_user: ubuntu
       shell: kubectl set image deployment/blogr-app blogr-app=denzal/blogr:latest --namespace=blogr
-#TODO: implement verdsion variable instead of latest
+#TODO: implement version variable instead of latest
